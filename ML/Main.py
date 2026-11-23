@@ -1,3 +1,12 @@
+"""
+To RUN this code you can type the following on the ML folder location:
+
+rm -r Results/GPpos*
+
+python Main.py
+
+paraview
+"""
 import numpy as np
 import numpy as np
 import matplotlib.pyplot as plt
