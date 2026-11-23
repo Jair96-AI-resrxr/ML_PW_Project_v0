@@ -1,8 +1,10 @@
 import numpy as np
+# You can PLAY with the parameters at the bottom of this file
+
 # Nodes per element (Triangles first order)
 nod_e = 3
 
-# Type of element according PraView (Triangles first order)
+# Type of element according ParaView (Triangles first order)
 typeE_Paraview = 5
 
 # Gaussian points
@@ -29,10 +31,32 @@ coords = np.loadtxt('../FEM/output_mesh/coords.dat')
 coords = np.atleast_2d(coords)
 
 # Total area of domain
-area = 0.1**2
+area = 0.1**2 
 
-# Input points
-p_input = 10
+# --------------------------------
+# --------------------------------
+# You can PLAY with this parameters!
+
+# Input points (Initial observations)
+p_input = 10 # Number of random points in the domain 
 
 # theta --> [var,l,noise_std]
+# var: variance of the data 
+# l: Length Scale of the kernels (has to do with the dimensions of the square!)
+# noise_std: The noise we add when we compute the GP posterior
 theta = np.array([1.0,0.03,1e-4])
+
+# Kernel: You can choose these names
+         # rbf
+         # linear
+         # white
+         # periodic
+         # matern32
+         # matern552
+KernelName = "matern32"
+
+# Convergence criteria
+# The loop in Main is going to stop when std_yref (see Main) reaches this value
+# std_yref: standard deviation of the reference output (mean temperature)
+tolerance = 0.003
+

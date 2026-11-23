@@ -1,7 +1,7 @@
 import numpy as np
 import numpy as np
 import matplotlib.pyplot as plt
-from Parameters import p_input,coords,yrefFEM
+from Parameters import p_input,coords,yrefFEM,KernelName,tolerance
 from InitialObservations import InitialData
 from GPPosterior import MyGP_pos
 from VTKFile import WriteVTK
@@ -15,6 +15,7 @@ x_star,y_star,x,y,obs = InitialData(p_input)
 # y: Output of the initial observations (T)
 # x_star: Complete input space (x,y)
 # y_star: Complete output space (T)
+# obs: Indices of initial observations
 
 x = np.vstack((x))
 print("Initial set of inputs")
@@ -25,8 +26,7 @@ print(obs)
 
 error_yref = []
 
-# Convergence criteria
-tolerance = 0.003
+# Initialise the standard deviation of the reference output
 std_yref = 1.0
 
 i = 0
@@ -34,7 +34,7 @@ while(std_yref > tolerance):
     i += 1
     print("Iteration number : ",i)
     # Compute the posterior and the x-coord minima of each sample
-    mu,var = MyGP_pos('matern32',x,y,x_star)
+    mu,var = MyGP_pos(KernelName,x,y,x_star)
 
     VTKfilename = f"Results/GPpos{i}.vtk"
 
@@ -70,6 +70,11 @@ while(std_yref > tolerance):
 
     # Compute the absolute error of the reference output
     error_yref.append(abs(mu_yref - yrefFEM))
-    plt.plot(error_yref)
+    
 
+# Let's plot the error
+plt.plot(error_yref)
+plt.xlabel('Iterations')
+plt.ylabel('Absolute Error')
+plt.title('Absolute error of the mean temperature from ML with respect to FEM')
 plt.show()

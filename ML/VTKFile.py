@@ -1,4 +1,3 @@
-import numpy as np
 from Parameters import nod_e,typeE_Paraview,nodes,nelements,elements
 
 def WriteVTK(x,fi,VTKfile):
